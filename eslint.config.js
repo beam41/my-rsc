@@ -33,6 +33,7 @@ export default [
   ),
   {
     languageOptions: { globals: globals.browser },
+    settings: { react: { version: 'detect' } },
     plugins: {
       unicorn: fixupPluginRules(unicorn),
       '@typescript-eslint': fixupPluginRules(typescriptEslint),
