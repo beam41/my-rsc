@@ -1,4 +1,5 @@
 {
   "watch": ["src"],
+  "ext": "*",
   "exec": "pnpm build:dev && pnpm start:dev"
 }

@@ -1,5 +1,6 @@
 import { Suspense } from 'react'
-import Button from './Button'
+import TestItem from './test/TestItem'
+import Form from './components/Form'
 
 export default function App() {
   return (
@@ -7,17 +8,9 @@ export default function App() {
       <h1>Hellowwww</h1>
       <Suspense fallback={<p>Loading....</p>}>
         {/* @ts-expect-error Async Server Component */}
-        <Test />
-        <Button />
+        <TestItem />
       </Suspense>
+      <Form />
     </>
   )
-}
-
-async function Test() {
-  const test = await new Promise<string>((resolve) =>
-    setTimeout(() => resolve('test in'), 1000),
-  )
-
-  return <p>{test}</p>
 }

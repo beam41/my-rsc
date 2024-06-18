@@ -68,12 +68,14 @@ await esbuild({
               clientEntryPoint.add(absolutePath)
               return {
                 external: true,
-                path: /\.[jt]sx$/.test(relativePath)
-                  ? './' +
-                    path
-                      .relative(pathSource(), absolutePath)
-                      .replace(/\.[jt]sx$/, '.js')
-                  : './' + path.relative(pathSource(), absolutePath) + '.js',
+                path: path.join(
+                  '__BUILD_PLACEHOLDER',
+                  /\.[jt]sx$/.test(relativePath)
+                    ? path
+                        .relative(pathSource(), absolutePath)
+                        .replace(/\.[jt]sx$/, '.js')
+                    : path.relative(pathSource(), absolutePath) + '.js',
+                ),
               }
             }
           },
@@ -96,17 +98,25 @@ const { outputFiles } = await esbuild({
 })
 
 const writePromise = []
+const pathToHashed = {}
 
 for (const file of outputFiles) {
   const [, exports] = parse(file.text)
+
   let newContents = file.text
+  let filePath = file.path
 
   if (/^["']use client["']/.test(file.text)) {
+    let normHash = file.hash.replaceAll(/[/\\]/g, '_')
+    const { name, ext, dir } = path.parse(file.path)
+    filePath = path.join(dir, `${name}-${normHash}${ext}`)
+    const relativePath = path.relative(pathBuild(), filePath)
+
     for (const exp of exports) {
-      const key = `${file.hash}_${exp.ln}_${exp.n}`
+      const key = `${normHash}_${exp.ln}_${exp.n}`
 
       clientComponentMap[key] = {
-        id: `/build/${path.relative(pathBuild(), file.path)}`,
+        id: `/build/${relativePath.replaceAll(path.sep, '/')}`,
         name: exp.n,
         chunks: [],
         async: true,
@@ -116,16 +126,41 @@ for (const file of outputFiles) {
         `${exp.ln}.$$id = "${key}";` +
         `${exp.ln}.$$typeof = Symbol.for("react.client.reference");`
     }
+
+    pathToHashed[path.relative(pathBuild(), file.path)] = relativePath
   }
 
+  // if (path.basename(file.path) === '_client.js') {
+  //   const { name, ext, dir } = path.parse(file.path)
+  //   filePath = path.join(dir, `${name}-${file.hash}${ext}`)
+  // }
+
   writePromise.push(
-    await mkdir(path.dirname(file.path), { recursive: true }).then(
-      async () => await writeFile(file.path, newContents),
+    await mkdir(path.dirname(filePath), { recursive: true }).then(
+      async () => await writeFile(filePath, newContents),
     ),
   )
 }
 
+async function replacePlaceHolder() {
+  const serverFile = pathBuild('server.js')
+  let content = await readFile(serverFile, 'utf8')
+
+  for (const [placeholderPath, hashedPath] of Object.entries(pathToHashed)) {
+    content = content.replaceAll(
+      path
+        .join('__BUILD_PLACEHOLDER', placeholderPath)
+        .replaceAll('\\', '\\\\'),
+      './' + hashedPath.replaceAll('\\', '\\\\'),
+    )
+  }
+
+  await writeFile(serverFile, content, 'utf8')
+}
+
 writePromise.push(
+  // eslint-disable-next-line unicorn/prefer-top-level-await
+  replacePlaceHolder(),
   writeFile(
     pathBuild('_component.js'),
     'export default ' + JSON.stringify(clientComponentMap),
@@ -133,6 +168,6 @@ writePromise.push(
   copyFile(pathSource('index.html'), pathBuild('index.html')),
 )
 
-await Promise.allSettled(writePromise)
+await Promise.all(writePromise)
 
 console.log('Build time:', (process.uptime() * 1000).toFixed(3) + 'ms')
