@@ -81,9 +81,6 @@ importers:
       rimraf:
         specifier: 5.0.7
         version: 5.0.7
-      sass:
-        specifier: 1.77.5
-        version: 1.77.5
       typescript:
         specifier: 5.4.5
         version: 5.4.5
@@ -1136,9 +1133,6 @@ packages:
     resolution: {integrity: sha512-5Fytz/IraMjqpwfd34ke28PTVMjZjJG2MPn5t7OE4eUCUNf8BAa7b5WUS9/Qvr6mwOQS7Mk6vdsMno5he+T8Xw==}
     engines: {node: '>= 4'}
 
-  immutable@4.3.6:
-    resolution: {integrity: sha512-Ju0+lEMyzMVZarkTn/gqRpdqd5dOPaz1mCZ0SH3JV6iFw81PldE/PEB1hWVEA288HPt4WXW8O7AWxB10M+03QQ==}
-
   import-fresh@3.3.0:
     resolution: {integrity: sha512-veYYhQa+D1QBKznvhUHxb8faxlrwUnxseDAbAp457E0wLNio2bOSKnjYDhMj+YiAq61xrMGhQk9iXVk5FzgQMw==}
     engines: {node: '>=6'}
@@ -1698,11 +1692,6 @@ packages:
   safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
 
-  sass@1.77.5:
-    resolution: {integrity: sha512-oDfX1mukIlxacPdQqNb6mV2tVCrnE+P3nVYioy72V5tlk56CPNcO4TCuFcaCRKKfJ1M3lH95CleRS+dVKL2qMg==}
-    engines: {node: '>=14.0.0'}
-    hasBin: true
-
   scheduler@0.24.0-next-3706edb81-20230308:
     resolution: {integrity: sha512-KXiw/i2R2ERsp4I+jVSj2Jh7hwzdZWriaaVuKJ/lH9+Sh4j2rN6Ii6+EDiwQjxsP1SCCRs75BpkcXhoYlQ2F9w==}
 
@@ -1768,10 +1757,6 @@ packages:
   slash@3.0.0:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
     engines: {node: '>=8'}
-
-  source-map-js@1.2.0:
-    resolution: {integrity: sha512-itJW8lvSA0TXEphiRoawsCksnlf8SyvmFzIhltqAHluXd88pkCd+cXJVHTDwdCr0IzwptSm035IHQktUu1QUMg==}
-    engines: {node: '>=0.10.0'}
 
   source-map-support@0.5.21:
     resolution: {integrity: sha512-uBHU3L3czsIyYXKX88fdrGovxdSCoTGDRZ6SYXtSRxLZUzHg5P/66Ht6uoUlHu9EZod+inXhKo3qQgwXUT/y1w==}
@@ -3295,8 +3280,6 @@ snapshots:
 
   ignore@5.3.1: {}
 
-  immutable@4.3.6: {}
-
   import-fresh@3.3.0:
     dependencies:
       parent-module: 1.0.1
@@ -3833,12 +3816,6 @@ snapshots:
 
   safer-buffer@2.1.2: {}
 
-  sass@1.77.5:
-    dependencies:
-      chokidar: 3.6.0
-      immutable: 4.3.6
-      source-map-js: 1.2.0
-
   scheduler@0.24.0-next-3706edb81-20230308:
     dependencies:
       loose-envify: 1.4.0
@@ -3924,8 +3901,6 @@ snapshots:
       semver: 7.6.2
 
   slash@3.0.0: {}
-
-  source-map-js@1.2.0: {}
 
   source-map-support@0.5.21:
     dependencies:
