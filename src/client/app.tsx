@@ -1,4 +1,5 @@
 import { Suspense } from 'react'
+import Button from './Button'
 
 export default function App() {
   return (
@@ -7,6 +8,7 @@ export default function App() {
       <Suspense fallback={<p>Loading....</p>}>
         {/* @ts-expect-error Async Server Component */}
         <Test />
+        <Button />
       </Suspense>
     </>
   )

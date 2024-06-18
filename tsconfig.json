@@ -15,9 +15,6 @@
     "jsx": "preserve",
     "incremental": true,
     "checkJs": true,
-    "paths": {
-      "@/*": ["./src/*"]
-    }
   },
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
