@@ -8,21 +8,9 @@ importers:
 
   .:
     dependencies:
-      '@hono/node-server':
-        specifier: 1.11.3
-        version: 1.11.3
-      es-module-lexer:
-        specifier: 1.5.3
-        version: 1.5.3
-      esbuild:
-        specifier: 0.21.5
-        version: 0.21.5
       express:
         specifier: 4.19.2
         version: 4.19.2
-      globals:
-        specifier: 15.6.0
-        version: 15.6.0
       react:
         specifier: 18.3.0-next-3706edb81-20230308
         version: 18.3.0-next-3706edb81-20230308
@@ -60,6 +48,12 @@ importers:
       '@typescript-eslint/eslint-plugin':
         specifier: 7.13.0
         version: 7.13.0(@typescript-eslint/parser@7.13.0(eslint@8.57.0)(typescript@5.4.5))(eslint@8.57.0)(typescript@5.4.5)
+      es-module-lexer:
+        specifier: 1.5.3
+        version: 1.5.3
+      esbuild:
+        specifier: 0.21.5
+        version: 0.21.5
       eslint:
         specifier: 8.57.0
         version: 8.57.0
@@ -75,6 +69,9 @@ importers:
       eslint-plugin-unicorn:
         specifier: 54.0.0
         version: 54.0.0(eslint@8.57.0)
+      globals:
+        specifier: 15.6.0
+        version: 15.6.0
       rimraf:
         specifier: 5.0.7
         version: 5.0.7
@@ -266,10 +263,6 @@ packages:
   '@eslint/js@9.5.0':
     resolution: {integrity: sha512-A7+AOT2ICkodvtsWnxZP4Xxk3NbZ3VMHd8oihydLRGrJgqqdEz1qSeEgXYyT/Cu8h1TWWsQRejIx48mtjZ5y1w==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-
-  '@hono/node-server@1.11.3':
-    resolution: {integrity: sha512-mFg3qlKkDtMWSalX5Gyh6Zd3MXay0biGobFlyJ49i6R1smBBS1CYkNZbvwLlw+4sSrHO4ZiH7kj4TcLpl2Jr3g==}
-    engines: {node: '>=18.14.1'}
 
   '@humanwhocodes/config-array@0.11.14':
     resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
@@ -2134,8 +2127,6 @@ snapshots:
   '@eslint/js@8.57.0': {}
 
   '@eslint/js@9.5.0': {}
-
-  '@hono/node-server@1.11.3': {}
 
   '@humanwhocodes/config-array@0.11.14':
     dependencies:
