@@ -7,8 +7,8 @@
   "scripts": {
     "build": "node build.js",
     "start": "node build/server.js",
-    "lint": "prettier --check **/*.{scss,css,json,yaml} && eslint **/*.{js,jsx,ts,tsx}",
-    "lint:fix": "prettier --write **/*.{scss,css,json,yaml} && eslint --fix **/*.{js,jsx,ts,tsx}",
+    "lint": "prettier --no-error-on-unmatched-pattern --check **/*.{scss,css,json,yaml} && eslint --no-error-on-unmatched-pattern --no-warn-ignored **/*.{js,jsx,ts,tsx}",
+    "lint:fix": "prettier --no-error-on-unmatched-pattern --write **/*.{scss,css,json,yaml} && eslint --no-error-on-unmatched-pattern --no-warn-ignored --fix **/*.{js,jsx,ts,tsx}",
     "typechecks": "tsc --noemit"
   },
   "keywords": [],
