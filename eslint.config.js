@@ -32,6 +32,10 @@ export default [
     ),
   ),
   {
+    files: ['build.js', 'src/server/server.ts'],
+    languageOptions: { globals: globals.node },
+  },
+  {
     languageOptions: { globals: globals.browser },
     settings: { react: { version: 'detect' } },
     plugins: {

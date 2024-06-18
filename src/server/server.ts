@@ -4,10 +4,19 @@ import { createElement } from 'react'
 import { renderToReadableStream } from 'react-server-dom-webpack/server.browser'
 import App from '../client/app'
 import clientComponentMap from './_component'
+import { fileURLToPath } from 'node:url'
+import path from 'node:path'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const app = express()
 
 app.use('/build', express.static('build'))
+
+app.get('/', function (request, response) {
+  response.sendFile('./index.html', { root: __dirname })
+})
 
 app.get('/rsc', async (request, response) => {
   const stream = renderToReadableStream(createElement(App), clientComponentMap)

@@ -85,7 +85,7 @@ const { outputFiles } = await esbuild({
   format: 'esm',
   jsx: 'automatic',
   splitting: true,
-  minify: true,
+  minify: process.env.NODE_ENV === 'production',
   logLevel: 'error',
   entryPoints: [path.join(__dirname, 'src', '_client.ts'), ...clientEntryPoint],
   outdir: path.join(__dirname, 'build'),
@@ -113,10 +113,11 @@ for (const file of outputFiles) {
       `${exp.ln}.$$typeof = Symbol.for("react.client.reference");`
   }
 
-  writePromise.push(async () => {
-    await mkdir(path.dirname(file.path), { recursive: true })
-    await writeFile(file.path, newContents)
-  })
+  writePromise.push(
+    await mkdir(path.dirname(file.path), { recursive: true }).then(
+      async () => await writeFile(file.path, newContents),
+    ),
+  )
 }
 
 writePromise.push(
