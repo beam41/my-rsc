@@ -66,16 +66,12 @@ await esbuild({
 
             if (/^["']use client["']/.test(content)) {
               clientEntryPoint.add(absolutePath)
+
+              const { name } = path.parse(absolutePath)
+
               return {
                 external: true,
-                path: path.join(
-                  '__BUILD_PLACEHOLDER',
-                  /\.[jt]sx$/.test(relativePath)
-                    ? path
-                        .relative(pathSource(), absolutePath)
-                        .replace(/\.[jt]sx$/, '.js')
-                    : path.relative(pathSource(), absolutePath) + '.js',
-                ),
+                path: path.join('__BUILD_PLACEHOLDER', 'client', name + '.js'),
               }
             }
           },
@@ -94,11 +90,14 @@ const { outputFiles } = await esbuild({
   logLevel: 'error',
   entryPoints: [pathSource('_client.ts'), ...clientEntryPoint],
   outdir: pathBuild(),
+  entryNames: 'client/[name]',
   write: false,
 })
 
 const writePromise = []
 const pathToHashed = {}
+
+let clientFilePath = ''
 
 for (const file of outputFiles) {
   const [, exports] = parse(file.text)
@@ -130,10 +129,11 @@ for (const file of outputFiles) {
     pathToHashed[path.relative(pathBuild(), file.path)] = relativePath
   }
 
-  // if (path.basename(file.path) === '_client.js') {
-  //   const { name, ext, dir } = path.parse(file.path)
-  //   filePath = path.join(dir, `${name}-${file.hash}${ext}`)
-  // }
+  if (path.basename(file.path) === '_client.js') {
+    const { name, ext, dir } = path.parse(file.path)
+    filePath = path.join(dir, `${name}-${file.hash}${ext}`)
+    clientFilePath = path.relative(pathBuild(), filePath)
+  }
 
   writePromise.push(
     await mkdir(path.dirname(filePath), { recursive: true }).then(
@@ -158,6 +158,18 @@ async function replacePlaceHolder() {
   await writeFile(serverFile, content, 'utf8')
 }
 
+async function copyIndexHtml() {
+  const indexHtmlFile = pathSource('index.html')
+  let content = await readFile(indexHtmlFile, 'utf8')
+
+  content = content.replaceAll(
+    '{{CLIENT_PATH}}',
+    './build/' + clientFilePath.replaceAll('\\', '/'),
+  )
+
+  await writeFile(pathBuild('index.html'), content, 'utf8')
+}
+
 writePromise.push(
   // eslint-disable-next-line unicorn/prefer-top-level-await
   replacePlaceHolder(),
@@ -165,7 +177,8 @@ writePromise.push(
     pathBuild('_component.js'),
     'export default ' + JSON.stringify(clientComponentMap),
   ),
-  copyFile(pathSource('index.html'), pathBuild('index.html')),
+  // eslint-disable-next-line unicorn/prefer-top-level-await
+  copyIndexHtml(),
 )
 
 await Promise.all(writePromise)
