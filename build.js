@@ -4,6 +4,7 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises'
 import { parse } from 'es-module-lexer'
 import { fileURLToPath } from 'node:url'
 import { rimraf } from 'rimraf'
+import { sassPlugin } from 'esbuild-sass-plugin'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -92,6 +93,21 @@ const { outputFiles } = await esbuild({
   outdir: pathBuild(),
   entryNames: 'client/[name]',
   write: false,
+  plugins: [sassPlugin()],
+})
+
+const { outputFiles: outputCssFiles } = await esbuild({
+  bundle: true,
+  minify: process.env.NODE_ENV === 'production',
+  logLevel: 'error',
+  entryPoints: [pathSource('style', 'index.scss')],
+  outdir: pathBuild(),
+  write: false,
+  plugins: [
+    sassPlugin({
+      embedded: true,
+    }),
+  ],
 })
 
 const writePromise = []
@@ -165,6 +181,11 @@ async function copyIndexHtml() {
   content = content.replaceAll(
     '{{CLIENT_PATH}}',
     './build/' + clientFilePath.replaceAll('\\', '/'),
+  )
+
+  content = content.replaceAll(
+    '{{CLIENT_STYLE}}',
+    `<style>${outputCssFiles[0].text}</style>`,
   )
 
   await writeFile(pathBuild('index.html'), content, 'utf8')

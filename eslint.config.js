@@ -57,7 +57,7 @@ export default [
       'unicorn/prevent-abbreviations': [
         'error',
         {
-          ignore: ['Props', 'searchParams'],
+          ignore: ['Props', 'searchParams', 'props'],
         },
       ],
       'unicorn/no-useless-undefined': 'off',
@@ -71,6 +71,7 @@ export default [
         },
       ],
       'react-hooks/exhaustive-deps': 'off',
+      'unicorn/consistent-function-scoping': 'off',
     },
   },
 ]

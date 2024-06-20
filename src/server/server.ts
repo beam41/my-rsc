@@ -14,17 +14,17 @@ const app = express()
 
 app.use('/build', express.static('build'))
 
-app.get('/', function (request, response) {
-  response.sendFile('./index.html', { root: __dirname })
-})
-
-app.get('/rsc', async (request, response) => {
+app.get('/__rsc', async (request, response) => {
   const stream = renderToReadableStream(createElement(App), clientComponentMap)
 
   for await (const chunk of stream) {
     response.write(chunk)
   }
   response.end()
+})
+
+app.get('/*', function (request, response) {
+  response.sendFile('./index.html', { root: __dirname })
 })
 
 app.listen(3000, async () => {

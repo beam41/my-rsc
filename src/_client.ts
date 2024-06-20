@@ -12,7 +12,7 @@ window.__webpack_require__ = async (id) => {
 const root = createRoot(document.querySelector('#root'))
 
 /**
- * Fetch your server component stream from `/rsc`
+ * Fetch your server component stream from `/__rsc`
  * and render results into the root element as they come in.
  */
-root.render(await createFromFetch(fetch('/rsc')))
+root.render(await createFromFetch(fetch('/__rsc')))
