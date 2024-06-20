@@ -1,6 +1,6 @@
 import { build as esbuild } from 'esbuild'
 import path from 'node:path'
-import { readFile, writeFile, mkdir, copyFile } from 'node:fs/promises'
+import { readFile, writeFile, mkdir } from 'node:fs/promises'
 import { parse } from 'es-module-lexer'
 import { fileURLToPath } from 'node:url'
 import { rimraf } from 'rimraf'
